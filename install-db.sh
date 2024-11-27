@@ -1,5 +1,8 @@
 #! /bin/bash
 
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B7B3B788A8D3785C > /dev/null 2>&1
+sudo cp /etc/apt/trusted.gpg /etc/apt/trusted.gpg.d/
+
 # Database
 until apt-get remove -y unattended-upgrades; do sleep 5; done
 
@@ -21,6 +24,7 @@ dpkg --install mysql-apt-config_0.8.22-1_all.deb
 apt update
 apt install -y --allow-downgrades -f mysql-client=5.7* mysql-community-server=5.7* mysql-server=5.7*
 apt-mark hold mysql-client mysql-community-server mysql-server
+sudo apt-get update && sudo apt-get upgrade -y
 until echo "show databases;" | mysql; do sleep 5; done
 cat << EOF | mysql
 create database treefarm;
